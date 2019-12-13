@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.daffa.kontaqu.model.Kontak;
 import com.daffa.kontaqu.repository.KontakRepository;
@@ -33,6 +34,7 @@ import static com.daffa.kontaqu.util.AppConstants.INTENT_NO_TELP;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    TextView emptyView;
     KontakAdapter kontakAdapter;
     RecyclerView rvKontak;
     FloatingActionButton floatingActionButton;
@@ -49,19 +51,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         kontakRepository = new KontakRepository(getApplicationContext());
         rvKontak = findViewById(R.id.rvKontak);
 
-//        Kontak daffa = new Kontak();
-//        daffa.setNama("Daffa");
-//
-//        listKontak.add(daffa);
-//
-//        Kontak maria = new Kontak();
-//        maria.setNama("Maria");
-//
-//        listKontak.add(maria);
-
         floatingActionButton = findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(this);
 
+        emptyView = findViewById(R.id.empty_view);
 
         rvKontak.setLayoutManager(new LinearLayoutManager(this));
         rvKontak.addOnItemTouchListener(new RecyclerTouchListener(this, rvKontak, new ClickListener() {
@@ -87,11 +80,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(List<Kontak> kontaks) {
                 if (kontaks.size() > 0) {
+                    emptyView.setVisibility(View.GONE);
+                    rvKontak.setVisibility(View.VISIBLE);
                     kontakAdapter = new KontakAdapter(kontaks);
                     rvKontak.setAdapter(kontakAdapter);
-                }
+                } else updateEmptyView();
             }
         });
+    }
+
+    private void updateEmptyView() {
+        emptyView.setVisibility(View.VISIBLE);
+        rvKontak.setVisibility(View.GONE);
     }
 
     @Override
