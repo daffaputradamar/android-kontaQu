@@ -60,15 +60,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rvKontak.addOnItemTouchListener(new RecyclerTouchListener(this, rvKontak, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Kontak kontak = kontakAdapter.getItem(position);
-                Intent intent = new Intent(MainActivity.this, TambahKontak.class);
-                intent.putExtra(INTENT_KONTAK, kontak);
-                startActivityForResult(intent, ACTIVITY_REQUEST_CODE);
+
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
+                Kontak kontak = kontakAdapter.getItem(position);
+                Intent intent = new Intent(MainActivity.this, TambahKontak.class);
+                intent.putExtra(INTENT_KONTAK, kontak);
+                startActivityForResult(intent, ACTIVITY_REQUEST_CODE);
             }
         }));
 
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (kontaks.size() > 0) {
                     emptyView.setVisibility(View.GONE);
                     rvKontak.setVisibility(View.VISIBLE);
-                    kontakAdapter = new KontakAdapter(kontaks);
+                    kontakAdapter = new KontakAdapter(kontaks, MainActivity.this);
                     rvKontak.setAdapter(kontakAdapter);
                 } else updateEmptyView();
             }
