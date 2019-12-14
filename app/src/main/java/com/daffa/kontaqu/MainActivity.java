@@ -1,6 +1,5 @@
 package com.daffa.kontaqu;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ import com.daffa.kontaqu.model.Kontak;
 import com.daffa.kontaqu.repository.KontakRepository;
 import com.daffa.kontaqu.ui.activity.TambahKontak;
 import com.daffa.kontaqu.ui.adapter.KontakAdapter;
-import com.daffa.kontaqu.util.AppConstants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         kontakRepository = new KontakRepository(getApplicationContext());
         rvKontak = findViewById(R.id.rvKontak);
