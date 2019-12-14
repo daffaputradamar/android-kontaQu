@@ -3,6 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="text">#6F6C6D</color>
 
     <color name="bg_layout">#ebebeb</color>
     <color name="layout_title">#212121</color>
@@ -13,6 +14,28 @@
     <color name="edit_title">#757575</color>
     <color name="delete_tine">#40212121</color>
     <color name="bg_lock">#99000000</color>
+
+    <!-- View Pager -->
+    <color name="white">#FFFFFF</color>
+    <color name="logobg">#F6AF28</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#d1395c</color>
+    <color name="dot_dark_screen2">#14a895</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#f98da5</color>
+    <color name="dot_light_screen2">#8cf9eb</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen2</item>
+    </array>
 
 
 </resources>
