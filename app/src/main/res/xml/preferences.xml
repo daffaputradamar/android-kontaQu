@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Basic"
+        android:layout="@layout/preference_category">
+        <SwitchPreferenceCompat
+            android:key="switch"
+            android:title="Hide title"
+            android:summary="Hide or Show the 'List Kontak' title"/>
+    </PreferenceCategory>
+</PreferenceScreen>

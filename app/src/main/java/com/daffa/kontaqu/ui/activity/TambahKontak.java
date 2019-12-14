@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +25,7 @@ public class TambahKontak extends AppCompatActivity implements View.OnClickListe
 
     private EditText editNama, editNoTelp, editEmail;
     private TextView textTime, btnDone, toolbarTitle;
-    private ImageView btnDelete;
+    private ImageView btnDelete, btnPhone, btnMessage;
 
     private Kontak kontak;
 
@@ -44,13 +45,25 @@ public class TambahKontak extends AppCompatActivity implements View.OnClickListe
         btnDone = findViewById(R.id.btn_done);
         btnDone.setOnClickListener(this);
 
+        btnPhone = findViewById(R.id.btnPhone);
+        btnMessage = findViewById(R.id.btnEmail);
+
         kontak = (Kontak) getIntent().getSerializableExtra(INTENT_KONTAK);
         if (kontak == null) {
+            btnPhone.setVisibility(View.GONE);
+            btnMessage.setVisibility(View.GONE);
             toolbarTitle.setText("Tambah Kontak");
             btnDelete.setImageResource(R.drawable.btn_done);
             btnDelete.setTag(R.drawable.btn_done);
         } else {
-            toolbarTitle.setText("Edit Kontak");
+            toolbarTitle.setText("Kontak Detail");
+
+            btnPhone.setVisibility(View.VISIBLE);
+            btnPhone.setOnClickListener(this);
+
+            btnMessage.setVisibility(View.VISIBLE);
+            btnMessage.setOnClickListener(this);
+
             btnDelete.setImageResource(R.drawable.ic_delete);
             btnDelete.setTag(R.drawable.ic_delete);
             if (kontak.getNama() != null && !kontak.getNama().isEmpty()) {
@@ -101,6 +114,14 @@ public class TambahKontak extends AppCompatActivity implements View.OnClickListe
             setResult(Activity.RESULT_OK, intent);
             finish();
             overridePendingTransition(R.anim.stay, R.anim.slide_down);
+        } else if (view == btnPhone) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + kontak.getNoTelp()));
+            startActivity(intent);
+        } else if (view == btnMessage) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setType("vnd.android-dir/mms-sms");
+            intent.putExtra("address", kontak.getNoTelp());
+            startActivity(intent);
         }
     }
 
