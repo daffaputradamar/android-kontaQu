@@ -1,6 +1,7 @@
 package com.daffa.kontaqu.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daffa.kontaqu.R;
 import com.daffa.kontaqu.model.Kontak;
@@ -26,6 +28,7 @@ public class TambahKontak extends AppCompatActivity implements View.OnClickListe
     private EditText editNama, editNoTelp, editEmail;
     private TextView textTime, btnDone, toolbarTitle;
     private ImageView btnDelete, btnPhone, btnMessage;
+    private ConstraintLayout contraintLayout;
 
     private Kontak kontak;
 
@@ -33,6 +36,8 @@ public class TambahKontak extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_kontak);
+
+        contraintLayout = findViewById(R.id.constraint_layout);
 
         toolbarTitle = findViewById(R.id.title);
         editNama = findViewById(R.id.editNama);
@@ -50,12 +55,14 @@ public class TambahKontak extends AppCompatActivity implements View.OnClickListe
 
         kontak = (Kontak) getIntent().getSerializableExtra(INTENT_KONTAK);
         if (kontak == null) {
+            contraintLayout.setFocusableInTouchMode(false);
             btnPhone.setVisibility(View.GONE);
             btnMessage.setVisibility(View.GONE);
             toolbarTitle.setText("Tambah Kontak");
             btnDelete.setImageResource(R.drawable.btn_done);
             btnDelete.setTag(R.drawable.btn_done);
         } else {
+            contraintLayout.setFocusableInTouchMode(true);
             toolbarTitle.setText("Kontak Detail");
 
             btnPhone.setVisibility(View.VISIBLE);
@@ -99,21 +106,24 @@ public class TambahKontak extends AppCompatActivity implements View.OnClickListe
             finish();
             overridePendingTransition(R.anim.stay, R.anim.slide_down);
         } else if (view == btnDone) {
-            Intent intent = getIntent();
-            if(kontak != null) {
-                kontak.setNama(editNama.getText().toString());
-                kontak.setNoTelp(editNoTelp.getText().toString());
-                kontak.setEmail(editEmail.getText().toString());
-                intent.putExtra(INTENT_KONTAK, kontak);
-
+            if (editNama.getText().toString().isEmpty() || editNoTelp.getText().toString().isEmpty() || editEmail.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Informasi kontak harus lengkap", Toast.LENGTH_SHORT).show();
             } else {
-                intent.putExtra(INTENT_NAMA, editNama.getText().toString());
-                intent.putExtra(INTENT_NO_TELP, editNoTelp.getText().toString());
-                intent.putExtra(INTENT_EMAIL, editEmail.getText().toString());
+                Intent intent = getIntent();
+                if(kontak != null) {
+                    kontak.setNama(editNama.getText().toString());
+                    kontak.setNoTelp(editNoTelp.getText().toString());
+                    kontak.setEmail(editEmail.getText().toString());
+                    intent.putExtra(INTENT_KONTAK, kontak);
+                } else {
+                    intent.putExtra(INTENT_NAMA, editNama.getText().toString());
+                    intent.putExtra(INTENT_NO_TELP, editNoTelp.getText().toString());
+                    intent.putExtra(INTENT_EMAIL, editEmail.getText().toString());
+                }
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                overridePendingTransition(R.anim.stay, R.anim.slide_down);   
             }
-            setResult(Activity.RESULT_OK, intent);
-            finish();
-            overridePendingTransition(R.anim.stay, R.anim.slide_down);
         } else if (view == btnPhone) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + kontak.getNoTelp()));
             startActivity(intent);
