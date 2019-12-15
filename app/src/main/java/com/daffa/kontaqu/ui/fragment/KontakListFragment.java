@@ -91,7 +91,7 @@ public class KontakListFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_kontak_list, container, false);
 
-        isList = (preferences.getString(LIST_KEY, null)).equals("List") ? true : false;
+        isList = (preferences.getString(LIST_KEY, "List")).equals("List") ? true : false;
 
         kontakRepository = new KontakRepository(getActivity().getApplicationContext());
         rvKontak = view.findViewById(R.id.rvKontak);
