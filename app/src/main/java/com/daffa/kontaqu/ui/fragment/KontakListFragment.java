@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,12 +49,15 @@ import static com.daffa.kontaqu.util.AppConstants.INTENT_NO_TELP;
 public class KontakListFragment extends Fragment implements View.OnClickListener {
 
     public static final String SWITCH_KEY = "switch";
+    public static final String LIST_KEY = "list";
+
 
     TextView emptyView, txtKontakList;
     KontakAdapter kontakAdapter;
     RecyclerView rvKontak;
     FloatingActionButton floatingActionButton;
     List<Kontak> listKontak = new ArrayList<>();
+    boolean isList;
 
     private SharedPreferences preferences;
 
@@ -87,6 +91,8 @@ public class KontakListFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_kontak_list, container, false);
 
+        isList = (preferences.getString(LIST_KEY, null)).equals("List") ? true : false;
+
         kontakRepository = new KontakRepository(getActivity().getApplicationContext());
         rvKontak = view.findViewById(R.id.rvKontak);
         txtKontakList = view.findViewById(R.id.txtKontakList);
@@ -96,7 +102,11 @@ public class KontakListFragment extends Fragment implements View.OnClickListener
 
         emptyView = view.findViewById(R.id.empty_view);
 
-        rvKontak.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        if (isList) {
+            rvKontak.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        } else {
+            rvKontak.setLayoutManager(new GridLayoutManager(this.getActivity(), 2));
+        }
         rvKontak.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), rvKontak, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -124,7 +134,7 @@ public class KontakListFragment extends Fragment implements View.OnClickListener
                 if (kontaks.size() > 0) {
                     emptyView.setVisibility(View.GONE);
                     rvKontak.setVisibility(View.VISIBLE);
-                    kontakAdapter = new KontakAdapter(kontaks, getActivity());
+                    kontakAdapter = new KontakAdapter(kontaks, getActivity(), isList);
                     rvKontak.setAdapter(kontakAdapter);
                 } else updateEmptyView();
             }

@@ -26,10 +26,12 @@ public class KontakAdapter extends RecyclerView.Adapter<KontakAdapter.MyViewHold
 
     List<Kontak> kontakList;
     private Context context;
+    boolean isList;
 
-    public KontakAdapter(List<Kontak> kontakList, Context context) {
+    public KontakAdapter(List<Kontak> kontakList, Context context, boolean isList) {
         this.kontakList = kontakList;
         this.context = context;
+        this.isList = isList;
     }
 
     @NonNull
@@ -39,7 +41,13 @@ public class KontakAdapter extends RecyclerView.Adapter<KontakAdapter.MyViewHold
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-        View kontakView = layoutInflater.inflate(R.layout.kontak_item, parent, false);
+        View kontakView;
+        if (isList) {
+            kontakView = layoutInflater.inflate(R.layout.kontak_item, parent, false);
+        } else {
+            kontakView = layoutInflater.inflate(R.layout.kontak_item_grid, parent, false);
+        }
+
         MyViewHolder viewHolder = new MyViewHolder(kontakView);
 
         return viewHolder;
